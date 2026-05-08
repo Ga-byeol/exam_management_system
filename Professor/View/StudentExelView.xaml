@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="Exam.View.StudentExelView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:Exam.View"
+        mc:Ignorable="d">
+    <Border Background="White" BorderBrush="#E5E7EB" BorderThickness="2" CornerRadius="12" Padding="24">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- 표 헤더 제목 & 엑셀 버튼 -->
+                <RowDefinition Height="*"/>
+                <!-- 표(ListView) 영역 -->
+                <RowDefinition Height="Auto"/>
+                <!-- 하단 안내 문구 -->
+            </Grid.RowDefinitions>
+
+            <!-- 2-1. 헤더: 제목 & 엑셀 출력 버튼 -->
+            <DockPanel Grid.Row="0" Margin="0,0,0,20">
+                <!-- 우측 엑셀 버튼 -->
+                <Button DockPanel.Dock="Right" Background="#10B981" BorderThickness="0" Foreground="White" Height="40" Padding="16,0"
+                            materialDesign:ButtonAssist.CornerRadius="8">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="FileExcelOutline" Width="18" Height="18" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="엑셀 출력" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- 좌측 제목 -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <materialDesign:PackIcon Kind="AccountGroupOutline" Foreground="#3B82F6" Width="24" Height="24" Margin="0,0,8,0"/>
+                    <TextBlock Text="전체 학생 출석 현황" FontSize="18" FontWeight="Bold" Foreground="#374151"/>
+                </StackPanel>
+            </DockPanel>
+              
+            <!-- 2-2. 메인 데이터 리스트 (ListView) -->
+            <!-- BorderThickness="0"으로 기본 테두리를 없애고 깔끔하게 만듦 -->
+                <ListView Grid.Row="1" x:Name="StudentListView" BorderThickness="0" Background="Transparent"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="학번" Width="150" DisplayMemberBinding="{Binding StudentId}"/>
+                        <GridViewColumn Header="이름" Width="150" DisplayMemberBinding="{Binding Name}"/>
+                        <GridViewColumn Header="좌석" Width="100" DisplayMemberBinding="{Binding Seat}"/>
+
+                        <!-- ⭐ 상태 열: DataTrigger를 써서 아이콘과 색상을 바꾸는 커스텀 템플릿 -->
+                        <GridViewColumn Header="상태" Width="150">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon x:Name="StatusIcon" Kind="CheckCircleOutline" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                        <TextBlock x:Name="StatusText" Text="{Binding Status}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <!-- 마법의 트리거: 상태값에 따라 색상과 아이콘 변경 -->
+                                    <DataTemplate.Triggers>
+                                        <!-- 1. 대기 상태 (초록색) -->
+                                        <DataTrigger Binding="{Binding Status}" Value="대기">
+                                            <Setter TargetName="StatusIcon" Property="Foreground" Value="#10B981"/>
+                                            <Setter TargetName="StatusText" Property="Foreground" Value="#10B981"/>
+                                        </DataTrigger>
+
+                                        <!-- 2. 미접속 상태 (회색 + 연결 끊김 아이콘) -->
+                                        <DataTrigger Binding="{Binding Status}" Value="미접속">
+                                            <Setter TargetName="StatusIcon" Property="Kind" Value="WifiOff"/>
+                                            <Setter TargetName="StatusIcon" Property="Foreground" Value="#9CA3AF"/>
+                                            <Setter TargetName="StatusText" Property="Foreground" Value="#9CA3AF"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+
+                        <GridViewColumn Header="출석 응답" Width="150" DisplayMemberBinding="{Binding Response}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <!-- 2-3. 하단 안내 문구 -->
+            <TextBlock Grid.Row="2" Text="아직 출석 체크를 진행하지 않았습니다." 
+                           Foreground="#9CA3AF" FontSize="14" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+        </Grid>
+    </Border>
+</UserControl>
