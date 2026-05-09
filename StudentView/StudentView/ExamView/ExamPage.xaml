@@ -1,0 +1,25 @@
+﻿<Page x:Class="StudentView.ExamView.ExamPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="clr-namespace:StudentView.ExamView"
+      Background="#F5F5F5">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+            <!-- 유저 카드 -->
+            <local:StudentName Margin="0,0,0,12"/>
+            <!-- 시험 진행 중 배너 -->
+            <local:StudentState Margin="0,0,0,12"/>
+            <!-- 파일 수신 + 시험 응시 가로 배치 -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <local:StudentFile Grid.Column="0" VerticalAlignment="Stretch"/>
+                <local:StudentExam Grid.Column="2" VerticalAlignment="Stretch"/>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
