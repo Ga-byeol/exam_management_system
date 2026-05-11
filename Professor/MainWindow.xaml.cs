@@ -24,5 +24,10 @@ namespace Exam
         {
             InitializeComponent();
         }
+
+        private void SidebarView_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
