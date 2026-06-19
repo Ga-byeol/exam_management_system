@@ -13,7 +13,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
-        <views:SidebarView Grid.Column="0"/>
+        <views:SidebarView Grid.Column="0" Loaded="SidebarView_Loaded"/>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
